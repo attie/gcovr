@@ -60,6 +60,9 @@ def main(options, args):
         )
         sys.exit(0)
 
+    if options.output is not None:
+        options.output = os.path.abspath(options.output);
+
     if options.objdir:
         tmp = options.objdir.replace('/', os.sep).replace('\\', os.sep)
         while os.sep + os.sep in tmp:
