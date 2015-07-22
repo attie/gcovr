@@ -83,8 +83,6 @@ def main(options, args):
     for i in range(0, len(options.exclude)):
         options.exclude[i] = re.compile(options.exclude[i])
 
-    options.root_filter = re.compile('')
-    options.root_dir = os.getcwd()
     if options.root is not None:
         if not options.root:
             sys.stderr.write(
@@ -94,10 +92,10 @@ def main(options, args):
                 "\tThis option cannot be an empty string.\n"
             )
             sys.exit(1)
-        options.root_dir = os.path.abspath(options.root)
-        options.root_filter = re.compile(re.escape(options.root_dir + os.sep))
     else:
-        options.root = "."
+        options.root = '.'
+    options.root_dir = os.path.abspath(options.root)
+    options.root_filter = re.compile('^' + re.escape(options.root_dir + os.sep))
 
     for i in range(0, len(options.filter)):
         options.filter[i] = re.compile(options.filter[i])
