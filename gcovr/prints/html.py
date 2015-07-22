@@ -19,7 +19,7 @@ except:
 import os
 import sys
 
-from time import time
+from time import time, asctime
 from string import Template
 from datetime import date
 from posixpath import commonprefix
@@ -297,7 +297,7 @@ root_page = Template('''
           </tr>
           <tr>
             <td class="headerName">Date:</td>
-            <td class="headerValue">${DATE}</td>
+            <td class="headerValue">${FULL_DATETIME}</td>
             <td></td>
             <td class="headerName">Lines:</td>
             <td class="headerTableEntry">${LINES_EXEC}</td>
@@ -472,6 +472,7 @@ def print_html_report(covdata, options):
     data['VERSION'] = version_str()
     data['TIME'] = str(int(time()))
     data['DATE'] = date.today().isoformat()
+    data['FULL_DATETIME'] = asctime()
     data['ROWS'] = []
     data['low_color'] = low_color
     data['medium_color'] = medium_color
@@ -598,7 +599,9 @@ def print_html_report(covdata, options):
     data['ROWS'] = '\n'.join(data['ROWS'])
 
     if data['DIRECTORY'] == '':
-        data['DIRECTORY'] = "."
+        data['DIRECTORY'] = os.getcwd()
+    else:
+        data['DIRECTORY'] = os.path.abspath(data['DIRECTORY'])
 
     htmlString = root_page.substitute(**data)
 
